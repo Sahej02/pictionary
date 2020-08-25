@@ -1,7 +1,9 @@
 #This is going to define a player object on the server side
+from .game import Game
 
 class Player():
-	def __init__(self, ip, name):
+	def __init__(self, ip, name, game):
+		self.game = None
 		self.name = name
 		self.ip = ip
 		self.score = 0

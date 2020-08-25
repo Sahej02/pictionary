@@ -1,6 +1,9 @@
 #represents a round of the game, stores word, time, skips etc
 import time
-from _thread import *
+from _thread import start_new_thread
+from .game import Game
+from .chat import Chat
+
 
 class Round():
 	def __init__(self, word, player_drawing, players):
@@ -10,7 +13,15 @@ class Round():
 		self.skips = 0
 		self.player_scores = {player:0 for player in players}
 		self.time_var = 75
+		self.chat = Chat(self)
 		start_new_thread(self.time_thread, ())
+
+	def skip(self):
+		self.skips += 1
+		if self.skips > len(self.player_scores) - 2:
+			return True
+		
+		return False
 
 	def time_thread(self):
 		while self.time_var > 0:
@@ -30,7 +41,7 @@ class Round():
 		if player in self.player_guessed:
 			self.player_guessed.remove(player)
 
-		if player == player_drawing:
+		if player == self.player_drawing:
 			self.end_round("Player who was drawing left")
 
 	def end_round(self, msg):
