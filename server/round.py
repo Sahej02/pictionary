@@ -6,7 +6,7 @@ from .chat import Chat
 
 
 class Round():
-	def __init__(self, word, player_drawing, players):
+	def __init__(self, word, player_drawing, players, game):
 		self.word = word
 		self.player_drawing = player_drawing
 		self.player_guessed = []
@@ -22,6 +22,15 @@ class Round():
 			return True
 		
 		return False
+
+	def get_scores(self):
+		return self.player_scores.values()
+
+	def get_score(self, player):
+		if player in self.player_scores:
+			return self.player_scores[player]
+		else:
+			raise Exception("Player not in score list")
 
 	def time_thread(self):
 		while self.time_var > 0:

@@ -1,6 +1,7 @@
 from .player import Player
 from .round import Round
 from .board import Board
+import random
 
 class Game(object):
     def __init__(self, id, players):
@@ -12,7 +13,7 @@ class Game(object):
         self.player_draw_ind = 0
 
     def start_new_round(self):
-        self.round = Round(self.get_word(), self.players[self.player_draw_ind], self.players)
+        self.round = Round(self.get_word(), self.players[self.player_draw_ind], self.players, self)
         self.player_draw_ind += 1
 
         if self.player_draw_ind >= len(self.players):
@@ -20,7 +21,7 @@ class Game(object):
             self.end_game()     
 
     def player_guess(self, player, guess):
-        pass
+        return self.round.guess(player, guess)
 
     def player_disconnected(self, player):
         pass
@@ -46,5 +47,9 @@ class Game(object):
     def end_game(self):
         pass
 
-    def get_word(self):
-        pass
+    @staticmethod
+    def get_word():
+        with open("words.txt", "r") as f:
+            words = f.readlines()
+            i = random.randint(0, len(words))
+            return words[i].strip()
